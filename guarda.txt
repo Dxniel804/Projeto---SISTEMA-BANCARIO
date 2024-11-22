@@ -1,0 +1,13 @@
+
+                    os.system("cls")
+                    print("Conta Cadastrada com sucesso!!")
+                    clientes = Cliente(nome=nome, cpf=cpf, senha=senha)
+                    # Cria uma nova instância da classe Cliente com as informações
+
+                    clientes.adicionar_conta(clientes=clientes)
+                    # Adiciona a conta do cliente ao software
+
+                    banco.adicionar_cliente(clientes)
+                    # Adiciona a conta do cliente ao software
+
+                    break
