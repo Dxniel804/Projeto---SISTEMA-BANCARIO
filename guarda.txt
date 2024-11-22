@@ -1,13 +1,52 @@
+class ContaCorrente(Conta):
+    def __init__(self, saldo: float = 0.0, cpf=""):
+        super().__init__(saldo,cpf)
+    
+    def sacar(self, valor: float) -> None:
+        if valor > self.getSaldo(): 
+            print("Saldo insuficiente para realizar o saque.")
+        else:
+            self.setSaldo(self.getSaldo() - valor)
+            print(f"Saque de R${valor} realizado com sucesso")
+            print(f'Saldo atual {self.getSaldo()}')
 
-                    os.system("cls")
-                    print("Conta Cadastrada com sucesso!!")
-                    clientes = Cliente(nome=nome, cpf=cpf, senha=senha)
-                    # Cria uma nova instância da classe Cliente com as informações
+    def depositar(self, deposito: float):
+        self.setSaldo(self.getSaldo() + deposito)
+     
+    def __str__(self):
+        return f"R${self.getSaldo():.2f}"
+    
+      #Método (str): Definir como um objeto sera mostrado como uma string 
+  
+#-------------------------------------------------------------------    
+def consultar_conta(self, cpf, senha):
 
-                    clientes.adicionar_conta(clientes=clientes)
-                    # Adiciona a conta do cliente ao software
+    for conta in self.__contas:    
+        if cpf == conta.getCpf() and senha == conta.getSenha():
+            print("Login feito com sucesso :)")
+            return True, conta, self  # Retorna também a instância do cliente
+    print("CPF ou senha inválidos. Tente novamente.")
+    return False, None, None  # Retorna None para o cliente também
 
-                    banco.adicionar_cliente(clientes)
-                    # Adiciona a conta do cliente ao software
+class ContaPoupanca(Conta):
+    def __init__(self, saldo: float = 0.0):
+        super().__init__(saldo)
 
-                    break
+    def sacar(self, valor: float) -> None:
+
+        if self.getSaldo() - valor >= 100:
+            self.setSaldo(self.getSaldo() - valor) 
+            print(f"Saque de R${valor} realizado com sucesso")
+            print(f'Saldo atual {self.getSaldo()}')
+        else:
+            print('Seu saldo está abaixo de R$100.00')
+
+    def depositar(self, valor):
+
+        self.setSaldo(self.getSaldo() + valor)
+        print(f"Depósito de R${valor} realizado com sucesso!")
+
+    def adicionarSaldo(self, deposito):
+
+        self.__saldo += deposito
+  

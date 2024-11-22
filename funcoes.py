@@ -1,4 +1,4 @@
-from classes import Banco, Cliente, Conta, ContaCorrente, ContaPoupanca, Extrato
+from classes import Banco, Cliente, Conta, ContaCorrente, ContaPoupanca
 import os
 
 banco = Banco()
@@ -9,16 +9,16 @@ def sistema():
     os.system("pause")
 
 def cadastro():
-    sistema()
     try:
         while True:
+            os.system("cls")
             print("="*45)
             print()
             print("\tCadastre sua conta")
             print()
             print("="*45)
             try:
-                nome = input("Insira seu nome\n> ")
+                nome = str(input("Insira seu nome\n> "))
                 cpf = input("Insira seu CPF\n> ")
                 senha = input("Insira sua senha\n> ")
                 csenha = input("Confirme sua senha\n> ")
@@ -30,17 +30,20 @@ def cadastro():
                     print("Insira seu saldo na conta corrente")
                     scorrente = float(input(">> "))
                     os.system("cls")
+                    print("Insira seu saldo na conta poupança")
+                    spoupanca = float(input(">> "))
+                    os.system("cls")
                     print("Conta Cadastrada com sucesso!!")
                     saldo = ContaCorrente(saldo=scorrente)
-
-                    clientes = Cliente(nome=nome, cpf=cpf, senha=senha, saldo=saldo)
+                    
+                    clientes = Cliente(nome=nome, cpf=cpf, senha=senha, saldo_corrente=scorrente, saldo_poupanca=spoupanca)
                     # Cria uma nova instância da classe Cliente com as informações
 
-                    clientes.adicionar_conta(clientes=clientes)
-                    # Adiciona a conta do cliente ao software
+                    clientes.adicionar_conta(saldo)  
+                    # Adicione a conta corrente
 
-                    banco.adicionar_cliente(clientes)
-                    # Adiciona a conta do cliente ao software
+                    banco.adicionar_cliente(clientes)  
+                    # Adiciona o cliente ao banco
 
                     break
 
@@ -64,33 +67,30 @@ def login():
         while True:
             sistema() 
             print("="*35)
-            print()
             print("\tLogin na sua conta")
-            print()
             print("="*35)
             try:
                 cpf = input("Insira seu CPF\n> ")
                 senha = input("Insira sua senha\n> ")
                 for cliente in banco.clientes:
-                    autenticado, conta = cliente.consultar_conta(cpf, senha)
+                    autenticado, conta, cliente = cliente.consultar_conta(cpf, senha)
                     if autenticado:
                         os.system("cls")
                         print("Login efetuado com sucesso!!")
                         os.system("pause")
-                        menu(conta)
+                        menu(conta, cliente)  # Passar também o cliente
                         return
-               
             except Exception as e:
                 os.system("cls")
                 print(f"Erro no sistema, tente novamente\n{e}")
                 os.system("pause")
-
     except Exception as e:
         os.system("cls")
         print(f"Erro no sistema, tente novamente\n{e}")
         os.system("pause")
 
-def menu(conta):
+
+def menu(conta, cliente):
     while True:
         sistema()
         try:
@@ -98,7 +98,7 @@ def menu(conta):
             print()
             print("\tSeja Bem vindo ao BS Bank")
             print()
-            print(f"\tUsuario: {conta.getCpf()}")
+            print(f"\tUsuario: {cliente.getCpf()}")
             print()
             print("  [1]  -  Conta Corrente")
             print("  [2]  -  Conta Poupança")
@@ -125,7 +125,6 @@ def menu(conta):
                         print("\tOpções da Conta")
                         print()
                         print("  [1]  -  Remover Conta")
-                        print("  EM BREVE!!")
                         print()
                         print("="*35)
                         escolha = int(input("Escolha uma opção: "))
@@ -143,7 +142,8 @@ def menu(conta):
 
                                     case 1:
                                         clientes = input("Insira seu Nome: ")
-                                        Cliente.remover_conta(clientes=clientes)
+                                        cliente_remov = Cliente()
+                                        cliente_remov.remover_conta(clientes=clientes)
                                         break 
 
                                     case 2:
@@ -169,7 +169,7 @@ def conta_corrente(conta):
         print()
         print("\tConta Corrente")
         print()
-        print(f"\tUsuario: {conta.getCpf()}")
+        print(f"\tUsuario: {conta.getcpf()}")
         print(f"\tSaldo: {conta.getSaldo()}")
         print()
         print("  [1]  -  Depósito")
@@ -186,12 +186,17 @@ def conta_corrente(conta):
 
                 case 1:
                     os.system("cls")
+               
                     print("="*35)
                     print()
                     print("\tDepositar dinheiro")
                     print()
-                    deposito = float(input("Insira a quantidade que deesja depositar na Poupança\n>> "))
-                    
+                    print(f"Saldo Corrente: {conta.getSaldo()}")
+                    print(f"Saldo Poupança: {conta.getSaldo()}")
+                    print() 
+                    deposito = float(input("Insira a quantidade que deseja depositar na Poupança\n>> "))
+                    conta.getSaldo() - deposito
+                    conta.ContaPoupanca.getSaldo() + deposito   
                         
                 case 2:
                     pass
@@ -235,10 +240,23 @@ def conta_poupanca(conta):
             match escolha:
 
                 case 1:
-                    pass
-                        
+                    os.system("cls")
+               
+                    print("="*35)
+                    print()
+                    print("\tDepositar dinheiro")
+                    print()
+                    print(f"Saldo Corrente: {conta.getSaldo()}")
+                    print(f"Saldo Poupança: {ContaPoupanca.getSaldo()}")
+                    print() 
+                    deposito = float(input("Insira a quantidade que deseja depositar na Corrente\n>> "))
+                    conta.getSaldo() - deposito
+                    conta.ContaCorrente.getSaldo() + deposito
+                
                 case 2:
-                    pass
+                    os.system('cls')
+                    print()
+                    print()
                     
                 case 0:
                     sistema()

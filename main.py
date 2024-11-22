@@ -1,4 +1,5 @@
 from funcoes import *
+import os
 
 try:
     while True:
@@ -15,7 +16,7 @@ try:
         print("="*45)
         print()
         try:  
-            
+
             escolha = int(input("Escolha uma opção: "))
 
             match escolha:
